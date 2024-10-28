@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>ARSC Map</title>
+  <link rel="icon" type="image/png"
+    href="https://www.sia.aviation-civile.gouv.fr/pub/media/favicon/default/favicon.ico" />
+
+  <!-- include jquery -->
+  <script src="https://code.jquery.com/jquery-latest.js"></script>
+
+  <!-- include bootstrap-->
+  <!-- css -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+  <!-- include leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="./js/leaflet-panel-layers.min.js"></script>
+  <link rel="stylesheet" href="./css/leaflet-panel-layers.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-search@2.3.7/dist/leaflet-search.src.css" />
+  <script src="https://unpkg.com/leaflet-search@2.3.7/dist/leaflet-search.src.js"></script>
+  <script src="https://unpkg.com/esri-leaflet@2.3.0/dist/esri-leaflet.js"
+    integrity="sha512-1tScwpjXwwnm6tTva0l0/ZgM3rYNbdyMj5q6RSQMbNX6EUMhYDE3pMRGZaT41zHEvLoWEK7qFEJmZDOoDMU7/Q=="
+    crossorigin=""></script>
+  <script src="./js/leaflet-layerjson.js"></script>
+  <script src="./js/leaflet-provider.js"></script>
+
+  <!--srr data -->
+  <script src="./js/geojson.js"></script>
+
+
+  <!-- include omnivore plugin -->
+  <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
+
+  <!-- include ruler plugin-->
+  <link rel="stylesheet" href="./css/leaflet-ruler.css">
+  <script src="./js/leaflet-ruler.js"></script>
+
+  <!-- include EasyButton plugin -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+  <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+
+
+  <!-- include bookmarks plugin -->
+  <script type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/leaflet-bookmarks@0.3.0/dist/Leaflet.Bookmarks.min.js"></script>
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/leaflet-bookmarks@0.3.0/dist/leaflet.bookmarks.css">
+
+
+  <!-- include cluster plugin -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+
+  <!-- include ionicon  -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.min.js"></script>
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+  <!-- include Bootstrap  -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+  <!-- include leaflet geoman-io  -->
+  <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
+  <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
+
+  <!-- include leaflet coordinates  -->
+  <script src="https://cdn.jsdelivr.net/npm/leaflet.coordinates@0.1.5/dist/Leaflet.Coordinates-0.1.5.min.js"></script>
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/leaflet.coordinates@0.1.5/dist/Leaflet.Coordinates-0.1.5.css" />
+
+  <!-- include tokml.js geojson to kml conversion -->
+  <script src="./js/tokml.js"></script>
+
+  <!-- include gpx.js geojson to gpx conversion -->
+  <script src="./js/togpx.js"></script>
+
+  <!-- incLude leaflet.LinearMeasurement -->
+  <script src="./js/Leaflet.LinearMeasurement.js"></script>
+  <link rel="stylesheet" href="./css/Leaflet.LinearMeasurement.css">
+
+  <!-- incLude leaflet.PolylineMeasure -->
+  <script src="./js/Leaflet.PolylineMeasure.js"></script>
+  <link rel="stylesheet" href="./css/Leaflet.PolylineMeasure.css">
+
+  <!-- include Leaflet.BetterFileLayer plugin -->
+  <script type="application/javascript"
+    src="https://unpkg.com/leaflet-better-filelayer@0.1.1/dist/leaflet.betterfilelayer.min.js"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-better-filelayer@0.1.1/dist/leaflet.betterfilelayer.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer">
+
+
+
+  <style>
+    .ctrLabel {
+      background: rgba(255, 255, 255, 0);
+      border: 0;
+      border-radius: 0px;
+      box-shadow: 0 0px 0px;
+      color: blue;
+      text-shadow: 0.1em 0.1em 0.05em white
+    }
+
+    .tmaLabel {
+      background: rgba(255, 255, 255, 0);
+      border: 0;
+      border-radius: 0px;
+      box-shadow: 0 0px 0px;
+      color: #ee1289;
+      text-shadow: 0.1em 0.1em 0.05em white
+    }
+
+    .cdzaLabel {
+      background: rgba(255, 255, 255, 0);
+      border: 0;
+      border-radius: 0px;
+      box-shadow: 0 0px 0px;
+      color: green;
+      text-shadow: 0.1em 0.1em 0.05em white;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    #container {
+      position: relative;
+    }
+
+    #info {
+      position: absolute;
+      top: 50px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 999;
+      width: auto;
+      background-color: rgba(145, 143, 143, 0);
+      border-width: 0px;
+    }
+
+    h4,
+    p {
+      text-align: center
+    }
+
+    body {
+      margin: 0px;
+    }
+
+    #map {
+      position: relative;
+      height: 100vh;
+    }
+
+    .mapbox-attribution-container {
+      bottom: 0;
+      right: 0;
+      position: absolute;
+      display: block;
+      margin: 0 10 5;
+    }
+
+    .mapbox-wordmark {
+      position: absolute;
+      display: block;
+      height: 20px;
+      width: 65px;
+      left: 10px;
+      bottom: 10px;
+      text-indent: -9999px;
+      z-index: 99999;
+      overflow: hidden;
+
+    }
+
+    .leaflet-div-icon {
+      background: transparent !important;
+      border: 0px solid rgba(102, 102, 102, 0) !important;
+    }
+
+    .leaflet-panel-layers {
+      background: transparent !important;
+    }
+
+    .leaflet-panel-layers-list {
+      border: 0px solid rgba(102, 102, 102, 0) !important;
+      height: auto !important;
+    }
+
+    .noBorder {
+      background: black;
+      border: 1px solid orange;
+      color: white
+    }
+
+    .leaflet-tooltip-left.noBorder:before {
+      border-left-color: transparent !important;
+    }
+
+    .leaflet-tooltip-right.noBorder::before {
+      border-right-color: transparent !important;
+    }
+
+    .img-responsive {
+      max-width: 150px;
+      max-height: auto;
+    }
+
+    .srroacitanaLabel {
+      background: rgba(255, 255, 255, 0);
+      border: 0;
+      border-radius: 0px;
+      box-shadow: 0 0px 0px;
+      color: cyan;
+      /* text-shadow: 0.1em 0.1em 0.05em white */
+    }
+
+    .srromitanaLabel {
+      background: rgba(255, 255, 255, 0);
+      border: 0;
+      border-radius: 0px;
+      box-shadow: 0 0px 0px;
+      color: blue;
+      /* text-shadow: 0.1em 0.1em 0.05em white */
+    }
+
+    .srromirunLabel {
+      background: rgba(255, 255, 255, 0);
+      border: 0;
+      border-radius: 0px;
+      box-shadow: 0 0px 0px;
+      color: red;
+      /* text-shadow: 0.1em 0.1em 0.05em white */
+    }
+
+    .srromimruLabel {
+      background: rgba(255, 255, 255, 0);
+      border: 0;
+      border-radius: 0px;
+      box-shadow: 0 0px 0px;
+      color: #04fd18;
+      /* text-shadow: 0.1em 0.1em 0.05em white */
+    }
+
+    .srroacimruLabel {
+      background: rgba(255, 255, 255, 0);
+      border: 0;
+      border-radius: 0px;
+      box-shadow: 0 0px 0px;
+      color: #015808;
+      /* text-shadow: 0.1em 0.1em 0.05em white */
+    }
+
+    .srromisafLabel {
+      background: rgba(255, 255, 255, 0);
+      border: 0;
+      border-radius: 0px;
+      box-shadow: 0 0px 0px;
+      color: #e3fc00;
+      /* text-shadow: 0.1em 0.1em 0.05em white */
+    }
+
+    .srroacisafLabel {
+      background: rgba(255, 255, 255, 0);
+      border: 0;
+      border-radius: 0px;
+      box-shadow: 0 0px 0px;
+      color: #fca800;
+      /* text-shadow: 0.1em 0.1em 0.05em white */
+    }
+
+    .tmaLabel {
+      background: rgba(255, 255, 255, 0);
+      border: 0;
+      border-radius: 0px;
+      box-shadow: 0 0px 0px;
+      color: rgb(247, 3, 194);
+      /* text-shadow: 0.1em 0.1em 0.05em white */
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <div id="map" style="width: auto; height: 100vh;">
+      <a href="#" class='mapbox-wordmark' target="_blank">MAP ARSC SNA/OI/DE</a>
+    </div>
+    <div id="info" style="height: auto; padding-left: 5px; padding-bottom: 5px; padding-right: 5px ">
+      <a href="#" id="exportGpx"><button type="button" onclick="generateGeoJson()"
+          title="Enregistrer la ZPA au format gpx" class="btn btn-outline-light" id="datetime"></button></a>
+      <!-- test -->
+      <!-- <a href="#" id="exportKml">Export kml</a> -->
+      <!-- test -->
+    </div>
+  </div>
+  <script>
+    // insert date of day
+    var dt = new Date();
+    document.getElementById("datetime").innerHTML = dt.toLocaleDateString() + " - Export au format gpx";
+
+    // create map and add mapbox
+    var map = L.map('map', { attributionControl: false, zoomControl: true })
+    map.setView([-20.89, 55.5164], 7);
+
+
+    var credits = L.control.attribution().addTo(map);
+    credits.addAttribution('© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>');
+    mbUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYXBhcmtzYSIsImEiOiJja2w2OXo0OWkwbjMzMnBxcGxsYWY5ZGJpIn0.MB9IITyOr5hha9kjinx8CA';
+    // make and add basemap layer from mapbox
+    var mapbox_api_key = "pk.eyJ1IjoiYXBhcmtzYSIsImEiOiJja2w2OXo0OWkwbjMzMnBxcGxsYWY5ZGJpIn0.MB9IITyOr5hha9kjinx8CA"
+    var grayscale = L.tileLayer(mbUrl, { id: 'mapbox/light-v10' }),
+      streets = L.tileLayer(mbUrl, { id: 'mapbox/streets-v11' }),
+      dark = L.tileLayer(mbUrl, { id: 'mapbox/dark-v10' }),
+      outdoors = L.tileLayer(mbUrl, { id: 'mapbox/outdoors-v11' }).addTo(map),
+      emerald = L.tileLayer(mbUrl, { id: 'mapbox/emerald-v8' }),
+      satellite = L.tileLayer(mbUrl, { id: 'mapbox/satellite-v9' }),
+      streetssatellite = L.tileLayer(mbUrl, { id: 'mapbox/satellite-streets-v11' }),
+      //  ign =  L.tileLayer.provider('GeoportailFrance.ignMaps'),
+      geoportail = L.tileLayer.provider('GeoportailFrance.orthos');
+    ;
+    var ignClassiqueUrl = new L.TileLayer('https://igngp.geoapi.fr/tile.php/plan-ignv2/{z}/{x}/{y}.jpg',
+      ignClassiqueAttrib = '&copy; <a href="http://www.ign.fr">IGN</a>',
+      ignClassique = L.tileLayer(ignClassiqueUrl, { format: 'image/jpeg', minZoom: 0, maxZoom: 18, detectRetina: true, attribution: ignClassiqueAttrib }));
+
+    // var ignScanExpressUrl = new L.TileLayer('https://igngp.geoapi.fr/tile.php/scan-express/{z}/{x}/{y}.jpg',
+    //   ignScanExpressAttrib = '&copy; <a href="http://www.ign.fr">IGN</a>',
+    //   ignScanExpress = L.tileLayer(ignScanExpressUrl, { format: 'image/jpeg', minZoom: 6, maxZoom: 18, detectRetina: true, attribution: ignScanExpressAttrib }));
+
+    var ignOrthoUrl = new L.TileLayer('https://igngp.geoapi.fr/tile.php/orthos/{z}/{x}/{y}.jpg',
+      ignOrthoAttrib = '&copy; <a href="http://www.ign.fr">IGN</a>',
+      ignOrtho = L.tileLayer(ignOrthoUrl, { format: 'image/jpeg', minZoom: 0, maxZoom: 20, detectRetina: true, attribution: ignOrthoAttrib }));
+
+    var dark_bm = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/256/{z}/{x}/{y}?'
+      + 'access_token=' + mapbox_api_key,
+      { maxNativeZoom: 18, maxZoom: 19 }
+    );
+
+    var ignScanExpressUrl = L.tileLayer.wms('https://wxs.ign.fr/pa4svdu4ivo6bmzda55p8ght/geoportail/r/wms?SERVICE=WMS&REQUEST=GetCapabilities', {
+      layers: 'GEOGRAPHICALGRIDSYSTEMS.MAPS'
+    });
+
+    var shomUrl = 'https://geoapi.fr/shomgt/tile.php/gtpyr/{z}/{x}/{y}.png',
+      shom = L.tileLayer(shomUrl, { attribution: 'shom' });
+
+    //dark_bm.addTo(map)
+
+    // Data source
+
+    var token = "patHibl5vAvie0cRi.21f53e670982871c96f47a09ed02ea5dee5f8323ed21b7957eda0e6a5bd1c174" // ReadOnlyScope
+    var pio_tbl = "tbldt07rsHQNxsxaY";
+    var obstacles_tbl = "tblTOoQxoWH0psXAz";
+    var map_tbl = "tblIxGeTZrTdrqtqg";
+
+
+    var url = "https://api.airtable.com/v0/app9yuhmD51sbOs86/";
+
+    // get table contents and create cluster layer from it
+
+    var pio_markers = L.markerClusterGroup();
+    $.ajax({
+      type: "GET",
+      beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + token); },
+      dataSrc: 'records',
+      dataType: "json",
+      url: url + pio_tbl,
+      success: function (result) {
+        console.log('%cPIO:', 'text-decoration: underline; font-weight:bold;');
+        $.each(result.records, function (index) {
+          var recordData = result.records[index]["fields"];
+          console.dir("[" + recordData['region'] + "]" + " " + recordData['name'] + " / " + recordData['contact']);
+          // console.log(coverContact);
+          var colorIcon = `${recordData['isok']}` == 0 ? `red` : `blue`;
+          //console.log(recordData['isok']);
+          var popupContent = `
+        <div>
+          <div class="text-center"> 
+          </div> 
+	    <table class="table table-bordered table-sm table-hover">
+	    <thead>
+	     <tr class="table-primary">
+            	<th style="width: 25%" scope="col"><i>Infos</i></th>
+		<th style="width: 75%" scope="col"><i class= '${recordData['myIcon']}'></i>  ${recordData['name']}</th>
+	     </tr>
+	    </thead>
+	    <tbody>
+	      <tr>
+		<th scope="row"><i>Adresse</i></th>
+		<td class="text-nowrap"><b>${recordData['datadresse']}</b></td>
+	      </tr>
+	      <tr>
+		<th scope="row" class="text-nowrap"><i>Contact</i></th>
+		<td class="text-nowrap"><b>${recordData['datacontact']}</b></td>
+	      </tr>
+	      <tr>
+		<th scope="row" class="text-nowrap"><i>Mail</i></th>
+		<td class="text-nowrap"><b>${recordData['datamail']}</b></td>
+	      </tr>
+	      <tr>
+		<th scope="row" class="text-nowrap"><i>Website</i></th>
+		<td class="text-nowrap">${recordData['datawebsite']}</td>
+	      </tr>
+        <tr>
+		<th scope="row"><i>Type</i></th>
+		<td class="text-nowrap"><b><i class= '${recordData['myIcon']}'></i>  ${recordData['type']}</b></td>
+	      </tr>
+		<th scope="row"><i>Remarques</i></th>
+		<td class="text-nowrap"><b>${recordData['dataremarques']}</b></td>
+	      </tr>
+	    </tbody>
+	    </table>
+        </div>`;
+          var myIcon = L.divIcon({
+            className: 'custom-div-icon',
+            html: `<div style='background-color: transparent; class='marker-pin'></div><i class= '${recordData['myIcon']}' aria-hidden='true' style='color: ${colorIcon}'></i>`,
+            iconSize: [20, 20],
+            iconAnchor: [6, 6]
+          });
+          var marker = L.marker([recordData['lat'], recordData['lon']], { icon: myIcon });
+          marker.bindPopup(popupContent, {
+            maxWidth: "auto"
+          });
+          marker.bindTooltip(`<b>${recordData['name']} - ${recordData['type']} </b><br>Contact: ${recordData['contact']}`, {
+            sticky: true
+          });
+          pio_markers.addLayer(marker);
+
+        });
+      }
+    });
+
+    var Airports = new L.FeatureGroup();
+    $.ajax({
+      type: "GET",
+      beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + token); },
+      dataSrc: 'records',
+      dataType: "json",
+      url: url + map_tbl,
+      success: function (result) {
+        $.each(result.records, function (index) {
+          var recordData = result.records[index]["fields"];
+          if (recordData['Name'] == "Airports") {
+            var link = recordData["Attachments"][0].url;
+            // console.log(recordData['select']);
+            var AirportIcon = L.divIcon({
+              iconSize: [28, 28],
+              iconAnchor: [14, 28],
+              tooltipAnchor: [0, -15],
+              html: `<div style="background-color:transparent;"></div><i class="fa fa-plane fa-2x" style="color: ${recordData['color']}"></i>`
+            });
+            var omnivoreAirports = L.geoJSON(null, {
+              pointToLayer: function (feature, latlng) {
+                label = String(feature.properties.nameshort)
+                return L.marker(latlng, { icon: AirportIcon }).bindTooltip(label, { direction: "top", permanent: false, opacity: 0.7 });
+              }
+            });
+            var airport = omnivore.geojson(link, null, omnivoreAirports);
+            Airports.addLayer(airport)
+          }
+        });
+      }
+    });
+
+    var airspaces = new L.FeatureGroup();
+    $.ajax({
+      type: "GET",
+      beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + token); },
+      dataSrc: 'records',
+      dataType: "json",
+      url: url + map_tbl,
+      success: function (result) {
+        $.each(result.records, function (index) {
+          var recordData = result.records[index]["fields"];
+          if (recordData['select'] == "airspaces") {
+            var link = recordData["Attachments"][0].url;
+            // console.log(recordData['select']);
+            var airspacesStyle = L.geoJson(null, {
+              style: function (feature, latlng) {
+                return {
+                  stroke: recordData['stroke'],
+                  weight: recordData['epaisseur'],
+                  color: recordData['color'],
+                  fillOpacity: recordData['fillOpacity']
+                }
+              },
+            });
+            var airspace = omnivore.geojson(link, null, airspacesStyle);
+            airspaces.addLayer(airspace)
+          }
+        });
+      }
+    });
+
+    var vfrPoints = new L.FeatureGroup();
+    $.ajax({
+      type: "GET",
+      beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + token); },
+      dataSrc: 'records',
+      dataType: "json",
+      url: url + map_tbl,
+      success: function (result) {
+        $.each(result.records, function (index) {
+          var recordData = result.records[index]["fields"];
+          if (recordData['Name'] == "VFR") {
+            var link = recordData["Attachments"][0].url;
+            // console.log(recordData['select']);
+            var VfrIcon = L.divIcon({
+              iconSize: [28, 28],
+              iconAnchor: [14, 28],
+              tooltipAnchor: [0, -15],
+              html: '<div style="background-color:transparent;"></div><i class="fa fa-caret-up fa-3x" style="color: green"></i>'
+            });
+            var omnivorevfrPoints = L.geoJSON(null, {
+              pointToLayer: function (feature, latlng) {
+                label = String(feature.properties.name)
+                return L.marker(latlng, { icon: VfrIcon }).bindTooltip(label, { direction: "top", permanent: true, opacity: 0.7 });
+              }
+            });
+            var vfr = omnivore.geojson(link, null, omnivorevfrPoints)
+              ;
+            vfrPoints.addLayer(vfr)
+          }
+        });
+      }
+    });
+
+    var psaFmee = new L.FeatureGroup();
+    $.ajax({
+      type: "GET",
+      beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + token); },
+      dataSrc: 'records',
+      dataType: "json",
+      url: url + map_tbl,
+      success: function (result) {
+        $.each(result.records, function (index) {
+          var recordData = result.records[index]["fields"];
+          if (recordData['Name'] == "PSA") {
+            var link = recordData["Attachments"][0].url;
+            // console.log(recordData['select']);
+            var psaIcon = L.divIcon({
+              html: '<div style="background-color:transparent;"></div>'
+            });
+            var psaPoints = L.geoJSON(null, {
+              style: function (feature) {
+                return {
+                  stroke: recordData['stroke'],
+                  weight: recordData['epaisseur'],
+                  color: recordData['color'],
+                  fillOpacity: recordData['fillOpacity'],
+                };
+              },
+              pointToLayer: function (feature, latlng) {
+                label = String(feature.properties.H)
+                return L.marker(latlng, { icon: psaIcon }).bindTooltip(label, { className: 'noBorder', direction: "center", permanent: true, opacity: 1 });
+              }
+            });
+            var psa_p = omnivore.geojson(link, null, psaPoints)
+              ;
+            psaFmee.addLayer(psa_p)
+          }
+        });
+      }
+    });
+
+    var ZSar = new L.FeatureGroup();
+    $.ajax({
+      type: "GET",
+      beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + token); },
+      dataSrc: 'records',
+      dataType: "json",
+      url: url + map_tbl,
+      success: function (result) {
+        $.each(result.records, function (index) {
+          var recordData = result.records[index]["fields"];
+          if (recordData['Name'] == "Zones SAR") {
+            var link = recordData["Attachments"][0].url;
+            // console.log(recordData['select']);
+            var zsarIcon = L.divIcon({
+              html: '<div style="background-color:transparent;"></div>'
+            });
+            var zsarPoints = L.geoJSON(null, {
+              style: function (feature) {
+                return {
+                  stroke: recordData['stroke'],
+                  weight: recordData['epaisseur'],
+                  color: recordData['color'],
+                  fillOpacity: recordData['fillOpacity'],
+                };
+              },
+              pointToLayer: function (feature, latlng) {
+                label = String(feature.properties.H)
+                return L.marker(latlng, { icon: zsarIcon }).bindTooltip(label, { className: 'noBorder', direction: "center", permanent: true, opacity: 1 });
+              }
+            });
+            var zsar_p = omnivore.geojson(link, null, zsarPoints)
+              ;
+            ZSar.addLayer(zsar_p)
+          }
+        });
+      }
+    });
+
+    var wayPoints = new L.FeatureGroup();
+    $.ajax({
+      type: "GET",
+      beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + token); },
+      dataSrc: 'records',
+      dataType: "json",
+      url: url + map_tbl,
+      success: function (result) {
+        $.each(result.records, function (index) {
+          var recordData = result.records[index]["fields"];
+          if (recordData['Name'] == "WPT") {
+            var link = recordData["Attachments"][0].url;
+            // console.log(recordData['select']);
+            var WptIcon = L.divIcon({
+              iconSize: [28, 28],
+              iconAnchor: [14, 28],
+              tooltipAnchor: [0, -15],
+              html: '<div style="background-color:transparent;"></div><i class="fa fa-caret-up fa-3x" style="color: black"></i>'
+            });
+            var omnivorewayPoints = L.geoJSON(null, {
+              pointToLayer: function (feature, latlng) {
+                label = String(feature.properties.name)
+                return L.marker(latlng, { icon: WptIcon }).bindTooltip(label, { direction: "top", permanent: true, opacity: 0.7 });
+              }
+            });
+            var wpt = omnivore.geojson(link, null, omnivorewayPoints)
+              ;
+            wayPoints.addLayer(wpt)
+          }
+        });
+      }
+    });
+
+    var zsarPoints = new L.FeatureGroup();
+    $.ajax({
+      type: "GET",
+      beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + token); },
+      dataSrc: 'records',
+      dataType: "json",
+      url: url + map_tbl,
+      success: function (result) {
+        $.each(result.records, function (index) {
+          var recordData = result.records[index]["fields"];
+          if (recordData['Name'] == "Zones SAR (noms)") {
+            var link = recordData["Attachments"][0].url;
+            // console.log(recordData['select']);
+            var WptIcon = L.divIcon({
+              iconSize: [28, 28],
+              iconAnchor: [7, 28],
+              tooltipAnchor: [0, -25],
+              html: '<div style="background-color:transparent;"></div><i class="ion-android-add" style="color: pink"></i>'
+            });
+            var omnivorezsarPoints = L.geoJSON(null, {
+              pointToLayer: function (feature, latlng) {
+                label = String(feature.properties.name)
+                return L.marker(latlng, { icon: WptIcon }).bindTooltip(label, { direction: "top", permanent: true, opacity: 1 });
+              }
+            });
+            var wpt = omnivore.geojson(link, null, omnivorezsarPoints)
+              ;
+            zsarPoints.addLayer(wpt)
+          }
+        });
+      }
+    });
+
+    var Pdrline = new L.FeatureGroup();
+    $.ajax({
+      type: "GET",
+      beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + token); },
+      dataSrc: 'records',
+      dataType: "json",
+      url: url + map_tbl,
+      success: function (result) {
+        $.each(result.records, function (index) {
+          var recordData = result.records[index]["fields"];
+          if (recordData['Name'] == "PDR") {
+            var link = recordData["Attachments"][0].url;
+            // console.log(recordData['select']);
+            var pdrStyle = L.geoJson(null, {
+              style: function (feature) {
+                return {
+                  stroke: recordData['stroke'],
+                  weight: recordData['epaisseur'],
+                  color: recordData['color'],
+                  // fillOpacity: recordData['fillOpacity'],
+                };
+              }
+            });
+            var pdr = omnivore.geojson(link, null, pdrStyle).bindTooltip(function (layer) {
+              return layer.feature.properties.name;
+            }).bindPopup(function (layer) {
+              return layer.feature.properties.name;
+            });
+            Pdrline.addLayer(pdr)
+          }
+        });
+      }
+    });
+
+    var zonesd = new L.FeatureGroup();
+    $.ajax({
+      type: "GET",
+      beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + token); },
+      dataSrc: 'records',
+      dataType: "json",
+      url: url + map_tbl,
+      success: function (result) {
+        $.each(result.records, function (index) {
+          var recordData = result.records[index]["fields"];
+          if (recordData['Name'] == "Zones D") {
+            var link = recordData["Attachments"][0].url;
+            // console.log(recordData['select']);
+            var zonesdStyle = L.geoJson(null, {
+              style: function (feature) {
+                return {
+                  stroke: recordData['stroke'],
+                  weight: recordData['epaisseur'],
+                  color: recordData['color'],
+                  fillOpacity: recordData['fillOpacity'],
+                };
+              }
+            });
+            var zd = omnivore.geojson(link, null, zonesdStyle).bindPopup(function (layer) {
+              return layer.feature.properties.name;
+            });
+            zonesd.addLayer(zd)
+          }
+        });
+      }
+    });
+
+    // SRR
+    //// loading GeoJSON file
+    var srroacitanaStyle = {
+      "color": "cyan",
+      "weight": 2,
+      "opacity": 1,
+      "fillOpacity": 0.1
+    };
+
+    var srroacitana = L.geoJSON(srroacitanadata, {
+      style: srroacitanaStyle,
+      onEachFeature: function (feature, layer) {
+        layer.bindTooltip(feature.properties.name, { permanent: true, direction: 'center', className: 'srroacitanaLabel' });
+      }
+    });
+
+    var srromitanaStyle = {
+      "color": "blue",
+      "weight": 2,
+      "opacity": 1,
+      "fillOpacity": 0.1
+    };
+
+    var srromitana = L.geoJSON(srromitanadata, {
+      style: srromitanaStyle,
+      onEachFeature: function (feature, layer) {
+        layer.bindTooltip(feature.properties.name, { permanent: true, direction: 'center', className: 'srromitanaLabel' });
+      }
+    });
+
+    var srromimruStyle = {
+      "color": "lime",
+      "weight": 2,
+      "opacity": 1,
+      "fillOpacity": 0.1
+    };
+
+    var srromimru = L.geoJSON(srromimrudata, {
+      style: srromimruStyle,
+      onEachFeature: function (feature, layer) {
+        layer.bindTooltip(feature.properties.name, { permanent: true, direction: 'center', className: 'srromimruLabel' });
+      }
+    });
+
+    var srroacimruStyle = {
+      "color": "darkgreen",
+      "weight": 2,
+      "opacity": 1,
+      "fillOpacity": 0.1
+    };
+
+    var srroacimru = L.geoJSON(srroacimrudata, {
+      style: srroacimruStyle,
+      onEachFeature: function (feature, layer) {
+        layer.bindTooltip(feature.properties.name, { permanent: true, direction: 'center', className: 'srroacimruLabel' });
+      }
+    });
+
+    var srromisafStyle = {
+      "color": "yellow",
+      "weight": 2,
+      "opacity": 1,
+      "fillOpacity": 0.1
+    };
+
+    var srromisaf = L.geoJSON(srromisafdata, {
+      style: srromisafStyle,
+      onEachFeature: function (feature, layer) {
+        layer.bindTooltip(feature.properties.name, { permanent: true, direction: 'center', className: 'srromisafLabel' });
+      }
+    });
+
+    var srroacisafStyle = {
+      "color": "orange",
+      "weight": 2,
+      "opacity": 1,
+      "fillOpacity": 0.1
+    };
+
+    var srroacisaf = L.geoJSON(srroacisafdata, {
+      style: srroacisafStyle,
+      onEachFeature: function (feature, layer) {
+        layer.bindTooltip(feature.properties.name, { permanent: true, direction: 'center', className: 'srroacisafLabel' });
+      }
+    });
+
+    var srromirunStyle = {
+      "color": "red",
+      "weight": 2,
+      "opacity": 1,
+      "fillOpacity": 0.1
+    };
+
+    var srromirun = L.geoJSON(srromirundata, {
+      style: srromirunStyle,
+      onEachFeature: function (feature, layer) {
+        layer.bindTooltip(feature.properties.name, { permanent: true, direction: 'center', className: 'srromirunLabel' });
+      }
+    });
+
+    var tmaStyle = {
+      "color": "#ee1289",
+      "weight": 2,
+      "opacity": 1,
+      "fillOpacity": 0.1
+    };
+
+    var tma = L.geoJSON(tmarundata, {
+      style: tmaStyle,
+      onEachFeature: function (feature, layer) {
+        layer.bindTooltip(feature.properties.name, { permanent: true, direction: 'center', className: 'tmaLabel' });
+      }
+    });
+
+    var eauxmayStyle = {
+      "color": "#ee1289",
+      "weight": 2,
+      "opacity": 1,
+      "fillOpacity": 0.1
+    };
+
+    var eauxmay = L.geoJSON(eauxmaydata, {
+      style: eauxmayStyle,
+      onEachFeature: function (feature, layer) {
+        layer.bindTooltip(feature.properties.name, { permanent: true, direction: 'center', className: 'tmaLabel' });
+      }
+    });
+
+    var cdzaStyle = {
+      "color": "green",
+      "weight": 2,
+      "opacity": 1,
+      "fillOpacity": 0
+    };
+
+    var CDza = L.geoJSON(cdzadata, {
+      style: cdzaStyle,
+      onEachFeature: function (feature, layer) {
+        layer.bindTooltip(feature.properties.nom, { permanent: true, direction: 'center', className: 'cdzaLabel' });
+      }
+    });
+
+    // Baselayers and Overlays
+
+    var baseLayers = [{
+      title: "Titre",
+      group: "Fonds de cartes",
+      icon: `<i class='fa fa-paper-plane-o' aria-hidden='true' style='color: red'></i>`,
+      collapsed: true,
+      layers: [
+        {
+          name: "Grayscale",
+          icon: `<i class="fa fa-map-marker" aria-hidden="true" style='color: grey'></i>`,
+          layer: grayscale
+        },
+        {
+          name: "Dark",
+          icon: `<i class="fa fa-map-marker" aria-hidden="true" style='color: black'></i>`,
+          layer: dark
+        },
+        {
+          name: "Plan",
+          icon: `<i class="fa fa-map-marker" aria-hidden="true" style='color: orange'></i>`,
+          layer: streets
+        },
+        {
+          name: "IGN Classique",
+          icon: `<i class="fa fa-map-marker" aria-hidden="true" style='color: red'></i>`,
+          layer: ignClassiqueUrl
+        },
+        {
+          name: "IGN Ortho",
+          icon: `<i class="fa fa-map-marker" aria-hidden="true" style='color: red'></i>`,
+          layer: ignOrthoUrl
+        },
+        {
+          name: "IGN Scan Express",
+          icon: `<i class="fa fa-map-marker" aria-hidden="true" style='color: red'></i>`,
+          layer: ignScanExpressUrl
+        },
+        {
+          name: "Shom",
+          icon: `<i class="fa fa-map-marker" aria-hidden="true" style='color: blue'></i>`,
+          layer: shom
+        },
+        //"Streets Basic": streetsbasic,
+        //  "Pirates": pirates,
+
+        //"Dark light": dark_bm,
+        //  "Comic": comic,
+        //  "Pencil": pencil,
+        //	"Wheatpaste": wheatpaste,
+        //	"Outdoors": outdoors,
+        //	"Run Bike Hike":runbikehike,
+        //	"Emerald": emerald,
+        //"High Contrast": highcontrast,
+        //  "Satellite": satellite,
+        {
+          name: "Streets Satellite",
+          icon: `<i class="fa fa-map-marker" aria-hidden="true" style='color: blue'></i>`,
+          layer: streetssatellite
+        },
+        {
+          name: "Geoportail",
+          icon: `<i class="fa fa-map-marker" aria-hidden="true" style='color: cyan'></i>`,
+          layer: geoportail
+        }
+      ]
+    }];
+
+    var overlayMaps = [
+      {
+        group: "Données AIP",
+        collapsed: true,
+        layers:
+          [
+            {
+              active: false,
+              name: `<i> Espaces aériens</i>`,
+              icon: `<i class="fa fa-circle-thin" aria-hidden="true"></i>`,
+              layer: airspaces
+            },
+            {
+              active: false,
+              name: `<i>Point VFR</i>`,
+              icon: `<i class='fa fa-caret-up' aria-hidden='true' style='color: green'></i>`,
+              layer: vfrPoints
+            }
+            ,
+            {
+              active: false,
+              name: `<i>Waypoints</i>`,
+              icon: `<i class='fa fa-caret-up' aria-hidden='true' style='color: black'></i>`,
+              layer: wayPoints
+            },
+            {
+              active: false,
+              name: `<i>PDR</i>`,
+              icon: `<i class='fa fa-minus' aria-hidden='true' style='color: red'></i>`,
+              layer: Pdrline
+            },
+            {
+              active: false,
+              name: `<i>Airports</i>`,
+              icon: `<i class='fa fa-plane fa-lg' aria-hidden='true' style='color: black'></i>`,
+              layer: Airports
+            }
+          ]
+      },
+      {
+        group: "SAR RUN",
+        collapsed: true,
+        layers:
+          [
+            {
+              active: false,
+              name: `<i>Zones SAR RUN</i>`,
+              icon: `<i class="fa fa-dot-circle-o" aria-hidden="true" style='color: pink'></i>`,
+              layer: ZSar
+            },
+            {
+              active: false,
+              name: `<i>Noms</i>`,
+              icon: `<i class='ion-android-add' aria-hidden='true' style='color: pink'></i>`,
+              layer: zsarPoints
+            }
+          ]
+      },
+      {
+        group: "SAR DZA",
+        collapsed: true,
+        layers:
+          [
+            {
+              active: false,
+              name: `<i>Communes</i>`,
+              icon: `<i class="fa fa-dot-circle-o" aria-hidden="true" style='color: green'></i>`,
+              layer: CDza
+            }
+          ]
+      },
+      {
+        group: '<i class="fa fa-plane" aria-hidden="true"></i>SRR OACI',
+        collapsed: true,
+        layers: [
+          {
+            active: false,
+            name: "SRR OACI Antananarivo",
+            icon: '<i class="fa fa-circle" aria-hidden="true" style="color:cyan"></i>',
+            layer: srroacitana
+          },
+          {
+            active: false,
+            name: "SRR OACI Mauritius",
+            icon: '<i class="fa fa-circle" aria-hidden="true" style="color:darkgreen"></i>',
+            layer: srroacimru
+          },
+          {
+            active: false,
+            name: "SRR OACI Afrique du Sud",
+            icon: '<i class="fa fa-circle" aria-hidden="true" style="color:orange"></i>',
+            layer: srroacisaf
+          },
+          {
+            active: false,
+            name: "SRS ARSC La Réunion (TMA)",
+            icon: '<i class="fa fa-circle" aria-hidden="true" style="color:fuchsia"></i>',
+            layer: tma
+          },
+          {
+            active: false,
+            name: "Eaux territoriales de Mayotte (12NM)",
+            icon: '<i class="fa fa-circle" aria-hidden="true" style="color:fuchsia"></i>',
+            layer: eauxmay
+          }
+        ]
+      },
+      {
+        group: '<i class="fa fa-anchor" aria-hidden="true"></i>SRR OMI',
+        collapsed: true,
+        layers: [
+          {
+            active: false,
+            name: "SRR OMI Réunion",
+            icon: '<i class="fa fa-circle" aria-hidden="true" style="color:red"></i>',
+            layer: srromirun
+          },
+          {
+            active: false,
+            name: "SRR OMI Antananarivo",
+            icon: '<i class="fa fa-circle" aria-hidden="true" style="color:blue"></i>',
+            layer: srromitana
+          },
+          {
+            active: false,
+            name: "SRR OMI Mauritius",
+            icon: '<i class="fa fa-circle" aria-hidden="true" style="color:lime"></i>'
+            ,
+            layer: srromimru
+          },
+          {
+            active: false,
+            name: "SRR OMI Afrique du Sud",
+            icon: '<i class="fa fa-circle" aria-hidden="true" style="color:yellow"></i>',
+            layer: srromisaf
+          }
+        ]
+      },
+      {
+        group: "PIO",
+        collapsed: true,
+        layers:
+          [
+            {
+              active: false,
+              name: `<i> Contacts</i><br>↗  <a href="https://snaoi.gitlab.io/pio" target="_blank">fiche de suivi</a>`,
+              icon: `<i class='fa fa-user-circle' aria-hidden='true' style='color: black'></i>`,
+              layer: pio_markers
+            }
+          ]
+      },
+    ];
+
+    // Search Control
+
+    var searchControl = new L.control.search({
+      url: 'https://nominatim.openstreetmap.org/search?format=json&q={s}',
+      initial: false,
+      textPlaceholder: 'code OACI ?',
+      propertyName: 'display_name',
+      jsonpParam: 'json_callback',
+      marker: L.circleMarker([0, 0], { radius: 30 }),
+      propertyLoc: ['lat', 'lon'],
+      autoCollapse: true,
+      autoType: false,
+      minLength: 2,
+    });
+    map.addControl(searchControl);
+
+    var panelLayers = new L.Control.PanelLayers(baseLayers, overlayMaps, {
+      collapsibleGroups: true,
+      selectorGroup: true,
+      collapsed: false
+    });
+
+    map.addControl(panelLayers);
+
+    // Export to Gpx
+    // Generate GeoJson
+
+    function generateGeoJson() {
+      var fg = L.featureGroup();
+      var layers = findLayers(map);
+      layers.forEach(function (layer) {
+        fg.addLayer(layer);
+      });
+
+      // Convert to gpx
+      var gpx = togpx(fg.toGeoJSON());
+
+      document.getElementById('exportGpx').onclick = function (e) {
+
+        var data_gpx = 'data:application/javascript;charset=utf-8,' + encodeURIComponent(gpx);
+        document.getElementById('exportGpx').setAttribute('href', 'data:' + data_gpx);
+        document.getElementById('exportGpx').setAttribute('download', 'ZPA.gpx');
+        console.log(data_gpx);
+
+      };
+
+    }
+
+    function findLayers(map) {
+      var layers = [];
+      map.eachLayer(layer => {
+        if (
+          layer instanceof L.Polyline ||
+          layer instanceof L.Marker ||
+          layer instanceof L.Circle ||
+          layer instanceof L.CircleMarker
+        ) {
+          layers.push(layer);
+        }
+      });
+
+      // filter out layers that don't have the leaflet-geoman instance
+      layers = layers.filter(layer => !!layer.pm);
+
+      // filter out everything that's leaflet-geoman specific temporary stuff
+      layers = layers.filter(layer => !layer._pmTempLayer);
+
+      return layers;
+    }
+
+    // Shortucts to RUN & DZA views
+
+    L.easyButton('<small>RUN</small>', function () {
+      map.setView([-20.89, 55.5164], 7);
+    }).addTo(map);
+
+
+    L.easyButton('<small>DZA</small>', function () {
+      map.setView([-12.804722, 45.281111], 9);
+    }).addTo(map);
+
+    // Add leaflet-geoman controls with some options to the map
+    map.pm.addControls({
+      position: 'topleft',
+      drawCircleMarker: false,
+      drawRectangle: false,
+      cutPolygon: false,
+      rotateMode: false,
+    });
+
+
+    // Text layer
+    map.pm.setLang('fr');
+    map.pm.setPathOptions(
+      { color: 'red' },
+      {
+        ignoreShapes: ['Circle'],
+      }
+    );
+
+    // Dessiner un cercle avec Geoman et le convertir en polygone
+
+    // map.on('pm:create', (e) => {
+    //   if (e.shape === 'Circle') {
+    //     var circle = e.layer;
+    //     // Convertir le cercle en polygone
+    //     var polygon = L.PM.Utils.circleToPolygon(circle, { numberOfEdges: 100 });
+    //     // Ajouter le polygone à la carte
+    //     L.polygon(polygon).addTo(map);
+    //     // Supprimer le cercle original
+    //     map.removeLayer(circle);
+    //   }
+    // });
+
+    //Add ruler
+    /*     var options = {
+          position: 'topleft',         // Leaflet control position option
+          circleMarker: {               // Leaflet circle marker options for points used in this plugin
+            color: 'red',
+            radius: 2
+          },
+          lineStyle: {                  // Leaflet polyline options for lines used in this plugin
+            color: 'red',
+            dashArray: '1,10'
+          },
+          lengthUnit: {                 // You can use custom length units. Default unit is kilometers.
+            display: 'NM',              // This is the display value will be shown on the screen. Example: 'meters'
+            decimal: 2,                 // Distance result will be fixed to this value. 
+            factor: 0.539956803,               // This value will be used to convert from kilometers. Example: 1000 (from kilometers to meters)  
+            label: 'Distance:'
+          },
+          angleUnit: {
+            display: '&deg;',           // This is the display value will be shown on the screen. Example: 'Gradian'
+            decimal: 0,                 // Bearing result will be fixed to this value.
+            factor: null,               // This option is required to customize angle unit. Specify solid angle value for angle unit. Example: 400 (for gradian).
+            label: 'Bearing:'
+          }
+        }
+    
+          ;
+        L.control.ruler(options).addTo(map);
+    
+        L.control.scale().addTo(map); */
+
+    // add leaflet-bookmarks control
+    var control = new L.Control.Bookmarks().addTo(map);
+
+    // add coordinates
+    // add standard controls
+    L.control.coordinates().addTo(map);
+    //add configured controls
+    L.control.coordinates({
+      position: "bottomright",
+      useDMS: true,
+      labelTemplateLat: "{y}",
+      labelTemplateLng: "{x}",
+      useLatLngOrder: false
+    }).addTo(map);
+
+    // add LinearMeasurement
+
+    /*  map.addControl(new L.Control.LinearMeasurement({
+       unitSystem: 'km',
+       color: '#FF0080',
+       type: 'line'
+     })); */
+
+    // add PolylineMeasure
+
+    options = {
+      position: 'topleft',            // Position to show the control. Values: 'topright', 'topleft', 'bottomright', 'bottomleft'
+      unit: 'nauticalmiles',             // Default unit the distances are displayed in. Values: 'kilometres', 'landmiles', 'nauticalmiles'
+      useSubunits: true,              // Use subunits (metres/feet) in tooltips if distances are less than 1 kilometre/landmile
+      clearMeasurementsOnStop: true,  // Clear all measurements when Measure Control is switched off
+      showBearings: true,            // Whether bearings are displayed within the tooltips
+      bearingTextIn: 'In',            // language dependend label for inbound bearings
+      bearingTextOut: 'Out',          // language dependend label for outbound bearings
+      tooltipTextFinish: 'Cliquer pour <b>terminer la ligne</b><br>',
+      tooltipTextDelete: 'Appuyer sur la touche SHIFT et cliquer pour <b>supprimer le point</b>',
+      tooltipTextMove: 'Cliquer et glisser pour <b>déplacer le point</b><br>',
+      tooltipTextResume: '<br>Appuyer sur la touche CTRL et cliquer pour <b>continuer la ligne</b>',
+      tooltipTextAdd: 'Appuyer sur la touche CTRL et cliquer pour <b>ajouter un point</b>',
+      // language dependend labels for point's tooltips
+      measureControlTitleOn: 'Activer la mesure de lignes',   // Title for the Measure Control going to be switched on
+      measureControlTitleOff: 'Désactiver la mesure de lignes', // Title for the Measure Control going to be switched off
+      measureControlLabel: '&#8614;', // Label of the Measure Control (Unicode symbols are possible)
+      measureControlClasses: [],      // Classes to apply to the Measure Control
+      showClearControl: true,        // Show a control to clear all the measurements
+      clearControlTitle: 'Effacer les mesures', // Title text to show on the Clear Control
+      clearControlLabel: '&times',    // Label of the Clear Control (Unicode symbols are possible)
+      clearControlClasses: [],        // Classes to apply to Clear Control
+      showUnitControl: true,         // Show a control to change the units of measurements
+      unitControlUnits: ["kilometres", "landmiles", "nauticalmiles"],
+      // measurement units being cycled through by using the Unit Control
+      unitControlTitle: {             // Title texts to show on the Unit Control
+        text: 'Changer les unités de mesures',
+        kilometres: 'kilomètres',
+        landmiles: 'miles terrestres',
+        nauticalmiles: 'miles nautiques'
+      },
+      unitControlLabel: {             // Unit symbols to show in the Unit Control and measurement labels
+        metres: 'm',
+        kilometres: 'km',
+        feet: 'ft',
+        landmiles: 'mi',
+        nauticalmiles: 'nm'
+      },
+      unitControlClasses: [],         // Classes to apply to the Unit Control
+      tempLine: {                     // Styling settings for the temporary dashed line
+        color: '#00f',              // Dashed line color
+        weight: 2                   // Dashed line weight
+      },
+      fixedLine: {                    // Styling for the solid line
+        color: '#006',              // Solid line color
+        weight: 2                   // Solid line weight
+      },
+      arrow: {                        // Styling of the midway arrow 
+        color: '#000',              // Color of the arrow
+      },
+      startCircle: {                  // Style settings for circle marker indicating the starting point of the polyline
+        color: '#000',              // Color of the border of the circle
+        weight: 1,                  // Weight of the circle
+        fillColor: '#0f0',          // Fill color of the circle
+        fillOpacity: 1,             // Fill opacity of the circle
+        radius: 3                   // Radius of the circle
+      },
+      intermedCircle: {               // Style settings for all circle markers between startCircle and endCircle
+        color: '#000',              // Color of the border of the circle
+        weight: 1,                  // Weight of the circle
+        fillColor: '#ff0',          // Fill color of the circle
+        fillOpacity: 1,             // Fill opacity of the circle
+        radius: 3                   // Radius of the circle
+      },
+      currentCircle: {                // Style settings for circle marker indicating the latest point of the polyline during drawing a line
+        color: '#000',              // Color of the border of the circle
+        weight: 1,                  // Weight of the circle
+        fillColor: '#f0f',          // Fill color of the circle
+        fillOpacity: 1,             // Fill opacity of the circle
+        radius: 6                   // Radius of the circle
+      },
+      endCircle: {                    // Style settings for circle marker indicating the last point of the polyline
+        color: '#000',              // Color of the border of the circle
+        weight: 1,                  // Weight of the circle
+        fillColor: '#f00',          // Fill color of the circle
+        fillOpacity: 1,             // Fill opacity of the circle
+        radius: 3                   // Radius of the circle
+      },
+    };
+
+    L.control.polylineMeasure(options).addTo(map);
+
+    // add betterFileLayerControl
+
+    // The Options object
+    optionsbF = {
+      position: 'topleft', // Leaflet control position
+      fileSizeLimit: 1024, // File size limit in kb (default: 1024 kb)
+      style: () => { }, // Overwrite the default BFL GeoJSON style function
+      onEachFeature: () => { }, // Overwrite the default BFL GeoJSON onEachFeature function
+      layer: L.customLayer, // If you want a custom layer to be used (must be a GeoJSON class inheritance)
+      // Restrict accepted file formats (default: .gpx, .kml, .kmz, .geojson, .json, .csv, .topojson, .wkt, .shp, .shx, .prj, .dbf, .zip)
+      formats: ['.geojson', '.kml', '.gpx', '.kmz', '.shp'],
+      importOptions: { // Some file types may have import options, for now, just csv is documented
+        csv: {
+          delimiter: ';',
+          latfield: 'LAT',
+          lonfield: 'LONG',
+        },
+      },
+      text: { // If you need translate
+        title: "Importer un calque (.geojson, .kml, .gpx, .kmz ou .shp)", // Plugin Button Text
+      },
+    }
+
+    L.Control.betterFileLayer(optionsbF).addTo(map);
+
+  </script>
+</body>
+
+</html>
